@@ -28,7 +28,6 @@ function App() {
     fetch(`${url}/cycles`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCycle(data);
       })
       .catch((error) => console.log(error));
