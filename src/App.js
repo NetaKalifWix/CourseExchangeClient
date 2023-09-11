@@ -50,9 +50,7 @@ function App() {
       },
       body: JSON.stringify(toSend),
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         setExchanges(data);
         updateCycle();
