@@ -4,7 +4,7 @@ import DDCourseList from "./components/DDCourseList";
 
 import Cycle from "./components/Cycle";
 import Input from "./components/Input";
-
+const url = "https://course-exchange-server.onrender.com";
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
   const [currentCourse, setCurrentCourse] = useState("");
@@ -15,23 +15,17 @@ function App() {
   const [cycle, setCycle] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001`)
+    fetch(`${url}`)
       .then((response) => response.json())
       .then((data) => {
         setExchanges(data.exchanges);
         setCourseList(data.courses);
       });
-
-    fetch(`http://localhost:3001/cycles`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCycle(data);
-      })
-      .catch((error) => console.log(error));
+    updateCycle();
   }, []);
 
   const updateCycle = () => {
-    fetch(`http://localhost:3001/cycles`)
+    fetch(`${url}/cycles`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -49,7 +43,7 @@ function App() {
         desiredCourse: desiredCourse,
       },
     };
-    fetch(`http://localhost:3001/add`, {
+    fetch(`${url}/add`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +75,7 @@ function App() {
     );
 
     if (deleteItem) {
-      fetch(`http://localhost:3001/delete`, {
+      fetch(`${url}/delete`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
