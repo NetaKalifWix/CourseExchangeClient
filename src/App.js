@@ -20,8 +20,8 @@ function App() {
       .then((data) => {
         setExchanges(data.exchanges);
         setCourseList(data.courses);
+        updateCycle();
       });
-    updateCycle();
   }, []);
 
   const updateCycle = () => {
@@ -53,10 +53,13 @@ function App() {
       .then((response) => {
         return response.json();
       })
-      .then((data) => setExchanges(data))
+      .then((data) => {
+        setExchanges(data);
+        updateCycle();
+      })
       .catch((error) => console.log(error));
-    updateCycle();
   };
+
   const handleDeleteExchange = () => {
     const toSend = {
       toDelete: {
@@ -83,9 +86,11 @@ function App() {
         body: JSON.stringify(toSend),
       })
         .then((response) => response.json())
-        .then((data) => setExchanges(data))
+        .then((data) => {
+          setExchanges(data);
+          updateCycle();
+        })
         .catch((error) => console.log(error));
-      updateCycle();
     } else {
       alert("No data matching the deletion request was found");
     }
