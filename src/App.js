@@ -19,7 +19,7 @@ function App() {
   const [showMyExchanges, setShowMyExchanges] = useState(false);
 
   useEffect(() => {
-    fetch(`${urlTest}`)
+    fetch(`${url}`)
       .then((response) => response.json())
       .then((data) => {
         setExchanges(data.exchanges);
@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   const updateCycle = () => {
-    fetch(`${urlTest}/cycles`)
+    fetch(`${url}/cycles`)
       .then((response) => response.json())
       .then((data) => {
         setCycle(data);
@@ -46,7 +46,7 @@ function App() {
         desiredCourse: desiredCourse,
       },
     };
-    fetch(`${urlTest}/add`, {
+    fetch(`${url}/add`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function App() {
     );
 
     if (deleteItem) {
-      fetch(`${urlTest}/delete`, {
+      fetch(`${url}/delete`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
