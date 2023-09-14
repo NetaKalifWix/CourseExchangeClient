@@ -4,7 +4,9 @@ import DDCourseList from "./components/DDCourseList";
 
 import Cycle from "./components/Cycle";
 import Input from "./components/Input";
+import MyExchanges from "./components/MyExchanges";
 const url = "https://course-exchange-server.onrender.com";
+const urlTest = "http://localhost:3002";
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
   const [currentCourse, setCurrentCourse] = useState("");
@@ -15,7 +17,7 @@ function App() {
   const [cycle, setCycle] = useState([]);
 
   useEffect(() => {
-    fetch(`${url}`)
+    fetch(`${urlTest}`)
       .then((response) => response.json())
       .then((data) => {
         setExchanges(data.exchanges);
@@ -25,7 +27,7 @@ function App() {
   }, []);
 
   const updateCycle = () => {
-    fetch(`${url}/cycles`)
+    fetch(`${urlTest}/cycles`)
       .then((response) => response.json())
       .then((data) => {
         setCycle(data);
@@ -42,7 +44,7 @@ function App() {
         desiredCourse: desiredCourse,
       },
     };
-    fetch(`${url}/add`, {
+    fetch(`${urlTest}/add`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +77,7 @@ function App() {
     );
 
     if (deleteItem) {
-      fetch(`${url}/delete`, {
+      fetch(`${urlTest}/delete`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -96,6 +98,10 @@ function App() {
   return (
     <div className="App">
       <h1>Course Exchange App</h1>
+      <MyExchanges
+        handleDeleteExchange={handleDeleteExchange}
+        exchanges={exchanges}
+      />
       <div className="form">
         <DDCourseList
           courses={courseList}
@@ -116,14 +122,18 @@ function App() {
       </div>
       <div className="exchanges">
         <h2>Exchanges:</h2>
-        <ul>
-          {exchanges.map((exchange, index) => (
-            <li key={index}>
-              {exchange.name} give {exchange.currentCourse}, {exchange.name}{" "}
-              wants {exchange.desiredCourse}
-            </li>
-          ))}
-        </ul>
+        <tr>
+          <th>Name</th>
+          <th>What I Have</th>
+          <th>What I Want</th>
+        </tr>
+        {exchanges.map((exchange, index) => (
+          <tr>
+            <th>{exchange.name}</th>
+            <th>{exchange.currentCourse}</th>
+            <th>{exchange.desiredCourse}</th>
+          </tr>
+        ))}
       </div>
       <Cycle cycle={cycle} />
     </div>
