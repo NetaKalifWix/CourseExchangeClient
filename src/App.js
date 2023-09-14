@@ -133,6 +133,7 @@ function App() {
       </div>
       <ExchangesList exchanges={exchanges} />
       <Cycles cycles={cycles} />
+      <footer>© 2023 Neta Kalif, Special thanks to Harel Damti</footer>
     </div>
   );
 }
