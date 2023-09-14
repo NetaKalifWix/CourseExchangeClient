@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import DDCourseList from "./components/DDCourseList";
 
-import Cycle from "./components/Cycle";
+import Cycles from "./components/Cycles";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
@@ -15,11 +15,11 @@ function App() {
   const [phone, setPhone] = useState("");
   const [courseList, setCourseList] = useState([]);
   const [exchanges, setExchanges] = useState([]);
-  const [cycle, setCycle] = useState([]);
+  const [cycles, setCycles] = useState([]);
   const [showMyExchanges, setShowMyExchanges] = useState(false);
 
   useEffect(() => {
-    fetch(`${url}`)
+    fetch(`${urlTest}`)
       .then((response) => response.json())
       .then((data) => {
         setExchanges(data.exchanges);
@@ -29,10 +29,10 @@ function App() {
   }, []);
 
   const updateCycle = () => {
-    fetch(`${url}/cycles`)
+    fetch(`${urlTest}/cycles`)
       .then((response) => response.json())
       .then((data) => {
-        setCycle(data);
+        setCycles(data);
       })
       .catch((error) => console.log(error));
   };
@@ -46,7 +46,7 @@ function App() {
         desiredCourse: desiredCourse,
       },
     };
-    fetch(`${url}/add`, {
+    fetch(`${urlTest}/add`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function App() {
     );
 
     if (deleteItem) {
-      fetch(`${url}/delete`, {
+      fetch(`${urlTest}/delete`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ function App() {
         </button>
       </div>
       <ExchangesList exchanges={exchanges} />
-      <Cycle cycle={cycle} />
+      <Cycles cycles={cycles} />
     </div>
   );
 }
