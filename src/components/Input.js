@@ -1,7 +1,9 @@
+import React from "react";
+
 const Input = (props) => {
   return (
-    <label>
-      {props.label}
+    <React.Fragment>
+      <label>{props.label}</label>
       <input
         type="text"
         value={props.value}
@@ -9,7 +11,7 @@ const Input = (props) => {
           props.set(e.target.value);
         }}
       />
-    </label>
+    </React.Fragment>
   );
 };
 

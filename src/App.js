@@ -5,6 +5,7 @@ import DDCourseList from "./components/DDCourseList";
 import Cycle from "./components/Cycle";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
+import ExchangesList from "./components/ExchangesList";
 const url = "https://course-exchange-server.onrender.com";
 const urlTest = "http://localhost:3002";
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [courseList, setCourseList] = useState([]);
   const [exchanges, setExchanges] = useState([]);
   const [cycle, setCycle] = useState([]);
+  const [showMyExchanges, setShowMyExchanges] = useState(false);
 
   useEffect(() => {
     fetch(`${urlTest}`)
@@ -59,15 +61,7 @@ function App() {
       .catch((error) => console.log(error));
   };
 
-  const handleDeleteExchange = () => {
-    const toSend = {
-      toDelete: {
-        name: name,
-        phone: phone,
-        currentCourse: currentCourse,
-        desiredCourse: desiredCourse,
-      },
-    };
+  const handleDeleteExchange = (toSend) => {
     const deleteItem = exchanges.find(
       (person) =>
         person.name === toSend.toDelete.name &&
@@ -98,10 +92,14 @@ function App() {
   return (
     <div className="App">
       <h1>Course Exchange App</h1>
-      <MyExchanges
-        handleDeleteExchange={handleDeleteExchange}
-        exchanges={exchanges}
-      />
+      <button onClick={() => setShowMyExchanges(true)}>My Exchanges</button>
+      {showMyExchanges && (
+        <MyExchanges
+          handleDeleteExchange={handleDeleteExchange}
+          exchanges={exchanges}
+          setShowMyExchanges={setShowMyExchanges}
+        />
+      )}
       <div className="form">
         <DDCourseList
           courses={courseList}
@@ -118,23 +116,22 @@ function App() {
         <Input set={setname} value={name} label="Your Name (English)" />
         <Input set={setPhone} value={phone} label="Your Phone" />
         <button onClick={handleAddExchange}>Add Exchange</button>
-        <button onClick={handleDeleteExchange}>Delete Exchange</button>
+        <button
+          onClick={() =>
+            handleDeleteExchange({
+              toDelete: {
+                name: name,
+                phone: phone,
+                currentCourse: currentCourse,
+                desiredCourse: desiredCourse,
+              },
+            })
+          }
+        >
+          Delete Exchange
+        </button>
       </div>
-      <div className="exchanges">
-        <h2>Exchanges:</h2>
-        <tr>
-          <th>Name</th>
-          <th>What I Have</th>
-          <th>What I Want</th>
-        </tr>
-        {exchanges.map((exchange, index) => (
-          <tr>
-            <th>{exchange.name}</th>
-            <th>{exchange.currentCourse}</th>
-            <th>{exchange.desiredCourse}</th>
-          </tr>
-        ))}
-      </div>
+      <ExchangesList exchanges={exchanges} />
       <Cycle cycle={cycle} />
     </div>
   );

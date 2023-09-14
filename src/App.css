@@ -30,6 +30,7 @@ h1 {
   padding: 20px;
   max-width: 400px; /* Adjust the maximum width as needed */
   margin: 0 auto; /* Center the form horizontally */
+  margin-top: 16px;
 }
 
 label {
@@ -69,6 +70,8 @@ button:hover {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  width: 75%;
+  margin: 24px auto;
 }
 
 h2 {
@@ -87,10 +90,10 @@ ul li {
 
 /* Cycle styles */
 .cycles {
-  margin-top: 20px;
   font-size: 1.2rem;
 
-  margin-top: 20px;
+  width: 75%;
+  margin: 24px auto;
   background-color: #fff; /* Set a white background for exchanges */
   border: 1px solid #ccc;
   border-radius: 5px;
