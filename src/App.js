@@ -6,7 +6,7 @@ import Cycles from "./components/Cycles";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
-const url = "https://course-exchange-server-zlc5.onrender.com/";
+const url = "https://course-exchange-server-zlc5.onrender.com";
 const urlTest = "http://localhost:3002";
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
@@ -28,6 +28,8 @@ function App() {
       });
   }, []);
 
+
+  
   const updateCycle = () => {
     fetch(`${url}/cycles`)
       .then((response) => response.json())
