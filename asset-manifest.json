@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/CourseExchangeClient/static/css/main.cd03fd6e.css",
-    "main.js": "/CourseExchangeClient/static/js/main.548051f3.js",
+    "main.css": "/CourseExchangeClient/static/css/main.5bcfa89f.css",
+    "main.js": "/CourseExchangeClient/static/js/main.6d8c8f60.js",
     "index.html": "/CourseExchangeClient/index.html",
-    "main.cd03fd6e.css.map": "/CourseExchangeClient/static/css/main.cd03fd6e.css.map",
-    "main.548051f3.js.map": "/CourseExchangeClient/static/js/main.548051f3.js.map"
+    "main.5bcfa89f.css.map": "/CourseExchangeClient/static/css/main.5bcfa89f.css.map",
+    "main.6d8c8f60.js.map": "/CourseExchangeClient/static/js/main.6d8c8f60.js.map"
   },
   "entrypoints": [
-    "static/css/main.cd03fd6e.css",
-    "static/js/main.548051f3.js"
+    "static/css/main.5bcfa89f.css",
+    "static/js/main.6d8c8f60.js"
   ]
 }
