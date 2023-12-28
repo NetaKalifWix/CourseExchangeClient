@@ -16,6 +16,7 @@ Tasks:
 -   [ ] Personal profile page
 -   [ ] fetch courses names from the university site
 > -   [ ] parse university response
+
 > university response is an html file therefore we need to parse it to extract the courses names 
 
 # server
