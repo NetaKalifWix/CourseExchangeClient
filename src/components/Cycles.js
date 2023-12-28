@@ -23,10 +23,10 @@ const Cycles = (props) => {
                     <tr>
                       <td>{curr.name}</td>
                       <td>{curr.currentCourse}</td>
-                      {index === cycle.length - 1 ? (
-                        <td>{cycle[0].name}</td>
+                      {index === 0 ? (
+                        <td>{cycle[cycle.length - 1].name}</td>
                       ) : (
-                        <td>{cycle[index + 1].name}</td>
+                        <td>{cycle[index - 1].name}</td>
                       )}
                     </tr>
                   ))}
