@@ -12,7 +12,9 @@ Tasks:
 > - [ ] statistics and graphs
 > - [ ] validation
 > - [ ] add task if needed
-    > add a note if needed
+
+> add a note if needed
+
 -   [ ] Personal profile page
 -   [ ] fetch courses names from the university site
 > -   [ ] parse university response
