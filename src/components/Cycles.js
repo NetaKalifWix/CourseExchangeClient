@@ -1,5 +1,10 @@
 const Cycles = (props) => {
-  const cycles = props.cycles;
+  let cycles = props.cycles;
+  cycles = cycles.map((cycle) =>
+    cycle.reduce((accumulator, currentValue) => {
+      return [currentValue, ...accumulator];
+    }, [])
+  );
   return (
     <div className="cycles">
       <h2>Cycles:</h2>
@@ -23,10 +28,10 @@ const Cycles = (props) => {
                     <tr>
                       <td>{curr.name}</td>
                       <td>{curr.currentCourse}</td>
-                      {index === 0 ? (
-                        <td>{cycle[cycle.length - 1].name}</td>
+                      {index === cycle.length - 1 ? (
+                        <td>{cycle[0].name}</td>
                       ) : (
-                        <td>{cycle[index - 1].name}</td>
+                        <td>{cycle[index + 1].name}</td>
                       )}
                     </tr>
                   ))}
