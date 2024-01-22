@@ -5,7 +5,7 @@ const Input = (props) => {
     <React.Fragment>
       <label>{props.label}</label>
       <input
-        type="text"
+        type={props.type? props.type : "text"}
         value={props.value}
         onChange={(e) => {
           props.set(e.target.value);
