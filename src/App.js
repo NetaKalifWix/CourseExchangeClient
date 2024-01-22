@@ -6,6 +6,9 @@ import Cycles from "./components/Cycles";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
+import TopBar from "./components/TopBar";
+import LoginForm from "./personalPage/components/LoginForm";
+
 const url = "https://course-exchange-server-zlc5.onrender.com";
 const urlTest = "http://localhost:3002";
 function App() {
@@ -18,6 +21,9 @@ function App() {
   const [cycles, setCycles] = useState([]);
   const [showMyExchanges, setShowMyExchanges] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginFrom, setShowLoginFrom] = useState(false);
+
   useEffect(() => {
     fetch(`${url}`)
       .then((response) => response.json())
@@ -28,8 +34,6 @@ function App() {
       });
   }, []);
 
-
-  
   const updateCycle = () => {
     fetch(`${url}/cycles`)
       .then((response) => response.json())
@@ -93,6 +97,17 @@ function App() {
 
   return (
     <div className="App">
+      <TopBar
+        setIsLoggedIn={setIsLoggedIn}
+        setShowLoginFrom={setShowLoginFrom}
+      />
+      {showLoginFrom && (
+        <LoginForm
+          url={url}
+          setIsLoggedIn={setIsLoggedIn}
+          setShowLoginFrom={setShowLoginFrom}
+        />
+      )}
       <h1>Course Exchange App</h1>
       <button onClick={() => setShowMyExchanges(true)}>My Exchanges</button>
       {showMyExchanges && (
