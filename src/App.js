@@ -42,10 +42,10 @@ function App() {
   const handleAddExchange = () => {
     const toSend = {
       exchange: {
-        name: name,
-        phone: phone,
-        currentCourse: currentCourse,
-        desiredCourse: desiredCourse,
+        name,
+        phone,
+        currentCourse,
+        desiredCourse,
       },
     };
     fetch(`${url}/add`, {
