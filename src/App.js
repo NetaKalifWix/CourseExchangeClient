@@ -7,65 +7,72 @@ import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
 
-
 import TopBar from "./components/TopBar";
 import LoginForm from "./personalPage/components/LoginForm";
+// import useUserInfo from "./hooks/userInfo";
 
-const url = "https://course-exchange-server.onrender.com";
-// const urlTest = "http://localhost:3002";
+// const url = "https://course-exchange-server.onrender.com";
+const url = "http://localhost:3002";
 
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
   const [currentCourse, setCurrentCourse] = useState("");
-  const [name, setname] = useState("");
-  const [phone, setPhone] = useState("");
+  // const [name, setname] = useState("");
+  // const [phone, setPhone] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
   const [courseList, setCourseList] = useState([]);
   const [exchanges, setExchanges] = useState([]);
   const [cycles, setCycles] = useState([]);
   const [showMyExchanges, setShowMyExchanges] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const validate = (type,val) => {
-    if (type === "name"){
-      if (val === ""){
-        return false
+  const { name, phone, email } = userInfo;
+
+  const validate = (type, val) => {
+    if (type === "name") {
+      if (val === "") {
+        return false;
       }
     }
     // phone must start with 0 or +972
     // if it starts with +972 it must have 12 digits
     // if it starts with 0 it must have 10 digits
-    const phoneRegex = /^(\+972|0)([0-9]{9,10})$/
-    if (type === "phone"){
-      if (!phoneRegex.test(val)){
-        return false
+    const phoneRegex = /^(\+972|0)([0-9]{9,10})$/;
+    if (type === "phone") {
+      if (!phoneRegex.test(val)) {
+        return false;
       }
     }
-    return true
-  }
+    return true;
+  };
 
   const validateAll = () => {
-    
-    let errorMsg = ""
-    if (currentCourse === ""){
-      errorMsg = "Please select a current course"
+    let errorMsg = "";
+    if (currentCourse === "") {
+      errorMsg = "Please select a current course";
     }
-    if (desiredCourse === ""){
-      errorMsg = "Please select a desired course"
+    if (desiredCourse === "") {
+      errorMsg = "Please select a desired course";
     }
-    if (!validate("name",name)){
-      errorMsg = "Please enter a valid name"
+    if (!validate("name", name)) {
+      errorMsg = "Please enter a valid name";
     }
-    if (!validate("phone",phone)){
-      errorMsg = "Please enter a valid phone number"
+    if (!validate("phone", phone)) {
+      errorMsg = "Please enter a valid phone number";
     }
-    if (errorMsg !== ""){
-      alert(errorMsg)
-      setIsError(true)
-      return false
+    if (errorMsg !== "") {
+      alert(errorMsg);
+      setIsError(true);
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginFrom, setShowLoginFrom] = useState(false);
@@ -90,9 +97,8 @@ function App() {
   };
 
   const handleAddExchange = () => {
-
-    if (!validateAll()){
-      return
+    if (!validateAll()) {
+      return;
     }
     const toSend = {
       exchange: {
@@ -148,42 +154,59 @@ function App() {
   return (
     <div className="App">
       <TopBar
+        isLoggegIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
         setShowLoginFrom={setShowLoginFrom}
+        setShowMyExchanges={setShowMyExchanges}
+        userInfo={userInfo}
       />
       {showLoginFrom && (
         <LoginForm
           url={url}
+          isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
           setShowLoginFrom={setShowLoginFrom}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
         />
       )}
-      <h1>Course Exchange App</h1>
-      <button onClick={() => setShowMyExchanges(true)}>My Exchanges</button>
+      {/* <button onClick={() => setShowMyExchanges(true)}>My Exchanges</button> */}
       {showMyExchanges && (
         <MyExchanges
           handleDeleteExchange={handleDeleteExchange}
           exchanges={exchanges}
           setShowMyExchanges={setShowMyExchanges}
+          isLoggedIn={isLoggedIn}
+          userInfo={userInfo}
         />
       )}
       <div className="form">
-        <DDCourseList
+        <label>{!isLoggedIn ? "please login to add exchange" : "Hello " + name}</label>
+
+        {isLoggedIn && <DDCourseList
           courses={courseList}
           course={currentCourse}
           setCourse={setCurrentCourse}
           title="What I Have"
-        />
-        <DDCourseList
+        />}
+        {isLoggedIn && <DDCourseList
           courses={courseList}
           course={desiredCourse}
           setCourse={setDesiredCourse}
           title="What I Want"
-        />
-        <Input set={setname} value={name} label="Your Name (English)" isError ={isError && !validate("name",name)}/>
-        <Input set={setPhone} value={phone} label="Your Phone" isError={isError && !validate("phone",phone)}/>
-        <button onClick={handleAddExchange}>Add Exchange</button>
-        <button
+        />}
+        {isLoggedIn && <Input
+          set={(phone) =>
+            setUserInfo((curr) => {
+              return { ...curr, phone };
+            })
+          }
+          value={phone}
+          label="Your Phone"
+          isError={isError && !validate("phone", phone)}
+        />}
+        {isLoggedIn && <button onClick={handleAddExchange}>Add Exchange</button>}
+        {isLoggedIn && <button
           onClick={() =>
             handleDeleteExchange({
               toDelete: {
@@ -196,7 +219,7 @@ function App() {
           }
         >
           Delete Exchange
-        </button>
+        </button>}
       </div>
       <ExchangesList exchanges={exchanges} />
       <Cycles cycles={cycles} />

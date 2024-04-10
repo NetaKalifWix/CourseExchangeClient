@@ -1,8 +1,7 @@
 import React from "react";
 
 const Input = (props) => {
-
-  const { label, value, set , isError } = props;
+  const { label, value, type, set, isError } = props;
 
   const validate = (e) => {
     if (e.target.value === "") {
@@ -10,16 +9,16 @@ const Input = (props) => {
     } else {
       e.target.style.border = "1px solid black";
     }
-  }
+  };
   return (
     <React.Fragment>
       <label>{label}</label>
       <input
-        className = {isError ? 'inputError' : ''}
-        type={ type ? type : "text}
+        className={isError ? "inputError" : ""}
         value={value}
+        type={type ? type : "text"}
         onChange={(e) => {
-          props.set(e.target.value);
+          set ? set(e.target.value) : alert("please login")
         }}
       />
     </React.Fragment>

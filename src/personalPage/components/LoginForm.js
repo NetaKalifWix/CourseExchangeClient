@@ -1,19 +1,57 @@
-
 import { useState } from "react";
 import Input from "../../components/Input";
-import './LoginForm.css';
+import "./LoginForm.css";
 
-const LoginForm = ({url, setIsLoggedIn,setShowLoginFrom}) => {
-
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+const LoginForm = ({
+  url,
+  isLoggedIn,
+  setIsLoggedIn,
+  setShowLoginFrom,
+  userInfo,
+  setUserInfo,
+}) => {
+  const { name, password, email, phone } = userInfo;
   const [showPassword, setShowPassword] = useState(false);
 
+  const updateUserInfo = (prop) => {
+    setUserInfo((curr) => {
+      return { ...curr, ...prop };
+    });
+  };
+
+  const flagsToLabel = () => {
+    if (isLoggedIn) {
+      return "Logout";
+    } else {
+      return showPassword ? "login" : "send me a key";
+    }
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
+  }
+
   const handleSubmit = (e) => {
+
+    if (isLoggedIn) {
+      setIsLoggedIn(false);
+      return;
+    }
+
     e.preventDefault();
 
+    if (!showPassword) {
+      getAuthKey();
+      return;
+    }
+
+    // todo
+    // - add validation
+    // - add debounce
+
     const toSend = {
-      name: name,
+      email: email,
       password: password,
     };
 
@@ -26,21 +64,68 @@ const LoginForm = ({url, setIsLoggedIn,setShowLoginFrom}) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === "success") {
+        if (data.success) {
           setIsLoggedIn(true);
           setShowLoginFrom(false);
         } else {
-          alert("Wrong password");
+          alert("Wrong key");
+        }
+      });
+  };
+
+  const getAuthKey = () => {
+
+    if(!validateEmail(email)){
+      alert("Please enter a valid email");
+      return;
+    }
+
+    const toSend = {
+      email: email,
+      name: name,
+    };
+    fetch(`${url}/getAuthKey`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(toSend),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setShowPassword(true);
+        } else {
+          alert("error sending key");
         }
       });
   }
 
   return (
     <form className="loginForm">
-      <Input set={setName} value={name} label="Your Name (English)" />
-      <Input type = {showPassword ? 'text' : 'password'} set={setPassword} value={password} label="Your Password" />
-      {/* <Input type = 'checkbox' set={setShowPassword} value={showPassword} label="Show Password" /> */}
-      <button onClick={(e) => handleSubmit(e)}>Login</button>
+      {!isLoggedIn && !showPassword && (
+        <Input
+          set={(name) => updateUserInfo({ name })}
+          value={name}
+          label="Your Name (English)"
+        />
+      )}
+      {!isLoggedIn && !showPassword && (
+        <Input
+          set={(email) => updateUserInfo({ email })}
+          value={email}
+          label="Your Email"
+        />
+      )}
+      {!isLoggedIn && showPassword && (
+        <Input
+          type={"password"}
+          set={(password) => updateUserInfo({ password })}
+          value={password}
+          label="anter the key sent to your email"
+        />
+      )}
+      <button onClick={(e) => handleSubmit(e)}>{flagsToLabel()}</button>
     </form>
   );
 };
