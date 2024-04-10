@@ -5,6 +5,8 @@
     width: 100%;
     padding: 10px;
     background-color: rgb(183, 183, 183);
+    position: sticky;
+    top: 0;
 }
 
 
@@ -25,5 +27,16 @@
     position: relative;
     left: -47%;
 
-    
+}
+
+.personal_info_button {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    position: relative;
+    left: -47%;
 }

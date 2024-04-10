@@ -10,6 +10,12 @@ const TopBar = ({ setIsLoggedIn, setShowLoginFrom }) => {
         {" "}
         Login{" "}
       </button>
+      <button
+      className="personal_info_button"
+      >
+        {" "}
+        Personal Info{" "}
+      </button>
     </header>
   );
 };
