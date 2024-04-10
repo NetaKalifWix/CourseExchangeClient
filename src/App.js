@@ -6,8 +6,8 @@ import Cycles from "./components/Cycles";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
-const url = "https://course-exchange-server-zlc5.onrender.com";
-const urlTest = "http://localhost:3002";
+// const url = "https://course-exchange-server-zlc5.onrender.com";
+const url = "http://localhost:3002";
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
   const [currentCourse, setCurrentCourse] = useState("");
@@ -17,6 +17,49 @@ function App() {
   const [exchanges, setExchanges] = useState([]);
   const [cycles, setCycles] = useState([]);
   const [showMyExchanges, setShowMyExchanges] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const validate = (type,val) => {
+    if (type === "name"){
+      if (val === ""){
+        return false
+      }
+    }
+    // phone must start with 0 or +972
+    // if it starts with +972 it must have 12 digits
+    // if it starts with 0 it must have 10 digits
+    const phoneRegex = /^(\+972|0)([0-9]{9,10})$/
+    if (type === "phone"){
+      if (!phoneRegex.test(val)){
+        return false
+      }
+    }
+    return true
+  }
+
+  const validateAll = () => {
+    
+    let errorMsg = ""
+    if (currentCourse === ""){
+      errorMsg = "Please select a current course"
+    }
+    if (desiredCourse === ""){
+      errorMsg = "Please select a desired course"
+    }
+    if (!validate("name",name)){
+      errorMsg = "Please enter a valid name"
+    }
+    if (!validate("phone",phone)){
+      errorMsg = "Please enter a valid phone number"
+    }
+    if (errorMsg !== ""){
+      alert(errorMsg)
+      setIsError(true)
+      return false
+    }
+
+    return true
+  }
 
   useEffect(() => {
     fetch(`${url}`)
@@ -40,12 +83,16 @@ function App() {
   };
 
   const handleAddExchange = () => {
+
+    if (!validateAll()){
+      return
+    }
     const toSend = {
       exchange: {
-        name: name,
-        phone: phone,
-        currentCourse: currentCourse,
-        desiredCourse: desiredCourse,
+        name,
+        phone,
+        currentCourse,
+        desiredCourse,
       },
     };
     fetch(`${url}/add`, {
@@ -115,17 +162,17 @@ function App() {
           setCourse={setDesiredCourse}
           title="What I Want"
         />
-        <Input set={setname} value={name} label="Your Name (English)" />
-        <Input set={setPhone} value={phone} label="Your Phone" />
+        <Input set={setname} value={name} label="Your Name (English)" isError ={isError && !validate("name",name)}/>
+        <Input set={setPhone} value={phone} label="Your Phone" isError={isError && !validate("phone",phone)}/>
         <button onClick={handleAddExchange}>Add Exchange</button>
         <button
           onClick={() =>
             handleDeleteExchange({
               toDelete: {
-                name: name,
-                phone: phone,
-                currentCourse: currentCourse,
-                desiredCourse: desiredCourse,
+                name,
+                phone,
+                currentCourse,
+                desiredCourse,
               },
             })
           }
