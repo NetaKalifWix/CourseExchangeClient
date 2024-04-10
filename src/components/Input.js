@@ -1,12 +1,23 @@
 import React from "react";
 
 const Input = (props) => {
+
+  const { label, value, set , isError } = props;
+
+  const validate = (e) => {
+    if (e.target.value === "") {
+      e.target.style.border = "1px solid red";
+    } else {
+      e.target.style.border = "1px solid black";
+    }
+  }
   return (
     <React.Fragment>
-      <label>{props.label}</label>
+      <label>{label}</label>
       <input
+        className = {isError ? 'inputError' : ''}
         type="text"
-        value={props.value}
+        value={value}
         onChange={(e) => {
           props.set(e.target.value);
         }}

@@ -1,5 +1,5 @@
 const DDCourseList = (props) => {
-  const courses = props.courses;
+  const { courses } = props;
   return (
     <>
       <label>{props.title}</label>
