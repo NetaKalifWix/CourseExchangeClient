@@ -11,8 +11,8 @@ import TopBar from "./components/TopBar";
 import LoginForm from "./personalPage/components/LoginForm";
 // import useUserInfo from "./hooks/userInfo";
 
-// const url = "https://course-exchange-server.onrender.com";
-const url = "http://localhost:3002";
+const url = "https://course-exchange-server.onrender.com";
+// const url = "http://localhost:3002";
 
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
