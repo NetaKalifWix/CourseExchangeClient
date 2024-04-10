@@ -104,6 +104,7 @@ function App() {
       exchange: {
         name,
         phone,
+        email,
         currentCourse,
         desiredCourse,
       },
