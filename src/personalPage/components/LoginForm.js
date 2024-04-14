@@ -1,0 +1,133 @@
+import { useState } from "react";
+import Input from "../../components/Input";
+import "./LoginForm.css";
+
+const LoginForm = ({
+  url,
+  isLoggedIn,
+  setIsLoggedIn,
+  setShowLoginFrom,
+  userInfo,
+  setUserInfo,
+}) => {
+  const { name, password, email, phone } = userInfo;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const updateUserInfo = (prop) => {
+    setUserInfo((curr) => {
+      return { ...curr, ...prop };
+    });
+  };
+
+  const flagsToLabel = () => {
+    if (isLoggedIn) {
+      return "Logout";
+    } else {
+      return showPassword ? "login" : "send me a key";
+    }
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    return emailRegex.test(email);
+  }
+
+  const handleSubmit = (e) => {
+
+    if (isLoggedIn) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    e.preventDefault();
+
+    if (!showPassword) {
+      getAuthKey();
+      return;
+    }
+
+    // todo
+    // - add validation
+    // - add debounce
+
+    const toSend = {
+      email: email,
+      password: password,
+    };
+
+    fetch(`${url}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(toSend),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setIsLoggedIn(true);
+          setShowLoginFrom(false);
+        } else {
+          alert("Wrong key");
+        }
+      });
+  };
+
+  const getAuthKey = () => {
+
+    if(!validateEmail(email)){
+      alert("Please enter a valid email");
+      return;
+    }
+
+    const toSend = {
+      email: email,
+      name: name,
+    };
+    fetch(`${url}/getAuthKey`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(toSend),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setShowPassword(true);
+        } else {
+          alert("error sending key");
+        }
+      });
+  }
+
+  return (
+    <form className="loginForm">
+      {!isLoggedIn && !showPassword && (
+        <Input
+          set={(name) => updateUserInfo({ name })}
+          value={name}
+          label="Your Name (English)"
+        />
+      )}
+      {!isLoggedIn && !showPassword && (
+        <Input
+          set={(email) => updateUserInfo({ email })}
+          value={email}
+          label="Your Email"
+        />
+      )}
+      {!isLoggedIn && showPassword && (
+        <Input
+          type={"password"}
+          set={(password) => updateUserInfo({ password })}
+          value={password}
+          label="anter the key sent to your email"
+        />
+      )}
+      <button onClick={(e) => handleSubmit(e)}>{flagsToLabel()}</button>
+    </form>
+  );
+};
+
+export default LoginForm;
