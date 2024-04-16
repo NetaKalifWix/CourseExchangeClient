@@ -142,6 +142,40 @@ function App() {
     }
   };
 
+ const debounce = (func) => {
+    let timeout;
+    let count = 0;
+    return function executedFunction(...args) {
+      count++;
+      const later = () => {
+        if (count < 4) {
+          count = 0;
+          return;
+        }
+        count = 0;
+        clearTimeout(timeout);
+        func(...args);
+      };
+      setTimeout(later, 1000);
+      clearTimeout(timeout);
+    }
+  }
+
+  const getGraph = debounce(() => {
+    fetch(`${url}/graph`)
+      .then((response) => response.text())
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
+        link.setAttribute("download", "data.txt");
+        document.body.appendChild(link);
+        if(window.confirm("Download the graph.dot file?")) {
+          link.click();
+        }
+      })
+      .catch((error) => console.log(error));
+  })
+
   return (
     <div className="App">
       <h1>Course Exchange App</h1>
@@ -196,7 +230,8 @@ function App() {
       </div>
       <ExchangesList exchanges={exchanges} />
       <Cycles cycles={cycles} />
-      <footer>© 2023 Neta Kalif, Special thanks to Harel Damti</footer>
+      <footer
+      onClick={getGraph}>© 2023 Neta Kalif, Eran Shtekel, Amir Gordon, Tal Nesher</footer>
     </div>
   );
 }
