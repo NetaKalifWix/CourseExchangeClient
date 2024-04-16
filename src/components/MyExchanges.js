@@ -55,26 +55,31 @@
 // };
 
 // export default MyExchanges;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import "./MyExchanges.css"; // Import the CSS file
 
 const MyExchanges = (props) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const { isLoggedIn , userInfo } = props;
+  const { name, phone } = userInfo;
   const [showExchanges, setShowExchanges] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [myExchanges, setMyExchanges] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const filterdExchanges = props.exchanges.filter(
-      (exchange) => exchange.name === name && exchange.phone === phone
-    );
-    setMyExchanges(filterdExchanges);
-    setShowExchanges(true);
-    setShowForm(false);
-  };
+  const filterdExchanges = props.exchanges.filter(
+    (exchange) => exchange.name === name
+  );
+  console.log(filterdExchanges);
+  console.log(props.exchanges);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setShowForm(true);
+      setMyExchanges(filterdExchanges);
+      setShowExchanges(true);
+      setShowForm(false);
+    }
+  }, [isLoggedIn]);
 
   const handleCloseModal = () => {
     props.setShowMyExchanges(false);
@@ -86,14 +91,19 @@ const MyExchanges = (props) => {
         <button className="closeButton" onClick={handleCloseModal}>
           Close
         </button>
-        {showForm && (
+        {/* {showForm && (
           <form className="MyExchangesForm form">
             <Input set={setName} value={name} label="Your Name (English)" />
             <Input set={setPhone} value={phone} label="Your Phone" />
             <button onClick={(e) => handleSubmit(e)}>Get My Exchanges</button>
           </form>
+        )} */}
+        {!isLoggedIn && (
+          <form className="MyExchangesForm form">
+            <h1>please login to see exchanges</h1>
+          </form>
         )}
-        {showExchanges && (
+        {isLoggedIn && (
           <div className="MyExchangesContent">
             {myExchanges.length > 0 ? (
               <table>
