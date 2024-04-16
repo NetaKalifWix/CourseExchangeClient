@@ -14,7 +14,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "REACT_APP_STATUS=prod react-scripts start",
+    "start": "react-scripts start",
+    "start-tmp": "REACT_APP_STATUS=prod react-scripts start",
     "start:local": "newsh 'cd ../CourseExchangeServer && node app.js' --split && REACT_APP_STATUS=dev react-scripts start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
