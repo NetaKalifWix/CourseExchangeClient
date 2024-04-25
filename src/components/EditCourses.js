@@ -11,6 +11,7 @@ const EditCourses = (props) => {
     setIsEditCoursesModalOpen(false);
   };
   const handleSubmit = (e) => {
+    e.preventDefault();
     fetch(`${url}/add_course`, {
       method: "PATCH",
       headers: {

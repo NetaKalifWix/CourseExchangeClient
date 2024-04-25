@@ -62,6 +62,9 @@ const LoginForm = ({
         if (data.success) {
           setIsLoggedIn(true);
           setShowLoginFrom(false);
+          if (data.isAdmin) {
+            setUserInfo({ ...userInfo, isAdmin: true });
+          }
         } else {
           alert("Wrong key");
         }
@@ -91,9 +94,6 @@ const LoginForm = ({
         console.log("hi");
         if (data.success) {
           setShowPassword(true);
-          if (data.isAdminAns) {
-            setUserInfo({ ...userInfo, isAdmin: true });
-          }
         } else {
           alert("error sending key");
         }
