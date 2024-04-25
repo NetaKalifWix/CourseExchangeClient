@@ -1,73 +1,16 @@
-// import React, { useState } from "react";
-// import Input from "./Input";
-// import "./MyExchanges.css";
-
-// const MyExchanges = (props) => {
-//   const [name, setName] = useState("");
-//   const [phone, setPhone] = useState("");
-//   const [showExchanges, setShowExchanges] = useState(false);
-//   const [myExchanges, setMyExchanges] = useState([]);
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const filterdExchanges = props.exchanges.filter(
-//       (exchange) => exchange.name === name && exchange.phone === phone
-//     );
-//     setMyExchanges(filterdExchanges);
-//     setShowExchanges(true);
-//   };
-//   return (
-//     <React.Fragment>
-//       <form className="MyExchangesForm">
-//         <Input set={setName} value={name} label="Your Name (English)" />
-//         <Input set={setPhone} value={phone} label="Your Phone" />
-//         <button onClick={(e) => handleSubmit(e)}>Get My Exchanges</button>
-//       </form>
-//       {showExchanges && (
-//         <div className="MyExchangesTabel modal">
-//           <tr className="tabelHeader">
-//             <th>What I Have</th>
-//             <th>What I Want</th>
-//             <th>Action</th>
-//           </tr>
-//           {myExchanges.map((exchange) => {
-//             return (
-//               <tr>
-//                 <th>{exchange.currentCourse}</th>
-//                 <th>{exchange.desiredCourse}</th>
-//                 <th>
-//                   <button onClick={props.handleDeleteExchange}>
-//                     Delete Exchange
-//                   </button>
-//                 </th>
-//               </tr>
-//             );
-//           })}
-//           <button
-//             className="closeButton"
-//             onClick={props.setShowMyExchanges(false)}
-//           >
-//             close
-//           </button>
-//         </div>
-//       )}
-//     </React.Fragment>
-//   );
-// };
-
-// export default MyExchanges;
 import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import "./MyExchanges.css"; // Import the CSS file
 
 const MyExchanges = (props) => {
-  const { isLoggedIn , userInfo } = props;
+  const { isLoggedIn, userInfo } = props;
   const { name, phone } = userInfo;
   const [showExchanges, setShowExchanges] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [myExchanges, setMyExchanges] = useState([]);
 
   const filterdExchanges = props.exchanges.filter(
-    (exchange) => exchange.name === name
+    (exchange) => exchange.phone === phone
   );
   console.log(filterdExchanges);
   console.log(props.exchanges);
@@ -91,13 +34,6 @@ const MyExchanges = (props) => {
         <button className="closeButton" onClick={handleCloseModal}>
           Close
         </button>
-        {/* {showForm && (
-          <form className="MyExchangesForm form">
-            <Input set={setName} value={name} label="Your Name (English)" />
-            <Input set={setPhone} value={phone} label="Your Phone" />
-            <button onClick={(e) => handleSubmit(e)}>Get My Exchanges</button>
-          </form>
-        )} */}
         {!isLoggedIn && (
           <form className="MyExchangesForm form">
             <h1>please login to see exchanges</h1>
@@ -122,14 +58,23 @@ const MyExchanges = (props) => {
                       <td>
                         <button
                           onClick={() => {
-                            props.handleDeleteExchange({
-                              toDelete: {
-                                name: exchange.name,
-                                phone: exchange.phone,
-                                currentCourse: exchange.currentCourse,
-                                desiredCourse: exchange.desiredCourse,
+                            props.handleDeleteExchange(
+                              {
+                                toDelete: {
+                                  name: exchange.name,
+                                  phone: exchange.phone,
+                                  currentCourse: exchange.currentCourse,
+                                  desiredCourse: exchange.desiredCourse,
+                                },
                               },
-                            });
+                              myExchanges.filter(
+                                (exchange1) =>
+                                  exchange1.desiredCourse ===
+                                    exchange.desiredCourse ||
+                                  exchange1.currentCourse ===
+                                    exchange.currentCourse
+                              )
+                            );
                             handleCloseModal();
                           }}
                         >

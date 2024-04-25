@@ -8,13 +8,14 @@ import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
 import TopBar from "./components/TopBar";
 import LoginForm from "./personalPage/components/LoginForm";
+import EditCourses from "./components/EditCourses";
 
 // const url = process.env.REACT_APP_STATUS === "prod"
 //   ? process.env.REACT_APP_SERVER_URL
 //   : process.env.REACT_APP_LOCAL_SERVER_URL;
 
-const url = "https://course-exchange-server.onrender.com";
-// const url = "http://localhost:3002";
+// const url = "https://course-exchange-server.onrender.com";
+const url = "http://localhost:3002";
 
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
@@ -24,12 +25,14 @@ function App() {
     email: "",
     phone: "",
     password: "",
+    isAdmin: false,
   });
   const [courseList, setCourseList] = useState([]);
   const [exchanges, setExchanges] = useState([]);
   const [cycles, setCycles] = useState([]);
   const [showMyExchanges, setShowMyExchanges] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isEditCoursesModalOpen, setIsEditCoursesModalOpen] = useState(false);
 
   const { name, phone, email } = userInfo;
 
@@ -78,13 +81,20 @@ function App() {
   const [showLoginFrom, setShowLoginFrom] = useState(false);
 
   useEffect(() => {
-    fetch(`${url}`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${url}`);
+        const data = await response.json();
         setExchanges(data.exchanges);
         setCourseList(data.courses);
-        updateCycle();
-      });
+        updateCycle(); // Assuming updateCycle is defined elsewhere
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const updateCycle = () => {
@@ -124,7 +134,7 @@ function App() {
       .catch((error) => console.log(error));
   };
 
-  const handleDeleteExchange = (toSend) => {
+  const handleDeleteExchange = (toSend, filteredExchanges) => {
     const deleteItem = exchanges.find(
       (person) =>
         person.name === toSend.toDelete.name &&
@@ -150,41 +160,14 @@ function App() {
     } else {
       alert("No data matching the deletion request was found");
     }
-  };
 
- const debounce = (func) => {
-    let timeout;
-    let count = 0;
-    return function executedFunction(...args) {
-      count++;
-      const later = () => {
-        if (count < 4) {
-          count = 0;
-          return;
-        }
-        count = 0;
-        clearTimeout(timeout);
-        func(...args);
-      };
-      setTimeout(later, 1000);
-      clearTimeout(timeout);
+    let exchangeList = "";
+    for (const exchange of filteredExchanges) {
+      exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
     }
-  }
-
-  const getGraph = debounce(() => {
-    fetch(`${url}/graph`)
-      .then((response) => response.text())
-      .then((data) => {
-        const link = document.createElement("a");
-        link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`;
-        link.setAttribute("download", "data.txt");
-        document.body.appendChild(link);
-        if(window.confirm("Download the graph.dot file?")) {
-          link.click();
-        }
-      })
-      .catch((error) => console.log(error));
-  })
+    const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
+    alert(message);
+  };
 
   return (
     <div className="App">
@@ -194,6 +177,8 @@ function App() {
         setShowLoginFrom={setShowLoginFrom}
         setShowMyExchanges={setShowMyExchanges}
         userInfo={userInfo}
+        setIsEditCoursesModalOpen={setIsEditCoursesModalOpen}
+        url={url}
       />
       {showLoginFrom && (
         <LoginForm
@@ -205,7 +190,14 @@ function App() {
           setUserInfo={setUserInfo}
         />
       )}
-      {/* <button onClick={() => setShowMyExchanges(true)}>My Exchanges</button> */}
+      {isEditCoursesModalOpen && (
+        <EditCourses
+          courseList={courseList}
+          setCourseList={setCourseList}
+          url={url}
+          setIsEditCoursesModalOpen={setIsEditCoursesModalOpen}
+        />
+      )}
       {showMyExchanges && (
         <MyExchanges
           handleDeleteExchange={handleDeleteExchange}
@@ -216,51 +208,61 @@ function App() {
         />
       )}
       <div className="form">
-        <label>{!isLoggedIn ? "please login to add exchange" : "Hello " + name}</label>
+        <label>
+          {!isLoggedIn ? "please login to add exchange" : "Hello " + name}
+        </label>
 
-        {isLoggedIn && <DDCourseList
-          courses={courseList}
-          course={currentCourse}
-          setCourse={setCurrentCourse}
-          title="What I Have"
-        />}
-        {isLoggedIn && <DDCourseList
-          courses={courseList}
-          course={desiredCourse}
-          setCourse={setDesiredCourse}
-          title="What I Want"
-
-        />}
-        {isLoggedIn && <Input
-          set={(phone) =>
-            setUserInfo((curr) => {
-              return { ...curr, phone };
-            })
-          }
-          value={phone}
-          label="Your Phone"
-          isError={isError && !validate("phone", phone)}
-        />}
-        {isLoggedIn && <button onClick={handleAddExchange}>Add Exchange</button>}
-        {isLoggedIn && <button
-          onClick={() =>
-            handleDeleteExchange({
-              toDelete: {
-                name,
-                phone,
-                currentCourse,
-                desiredCourse,
-              },
-            })
-          }
-        >
-          Delete Exchange
-        </button>}
+        {isLoggedIn && (
+          <DDCourseList
+            courses={courseList}
+            course={currentCourse}
+            setCourse={setCurrentCourse}
+            title="What I Have"
+          />
+        )}
+        {isLoggedIn && (
+          <DDCourseList
+            courses={courseList}
+            course={desiredCourse}
+            setCourse={setDesiredCourse}
+            title="What I Want"
+          />
+        )}
+        {isLoggedIn && (
+          <Input
+            set={(phone) =>
+              setUserInfo((curr) => {
+                return { ...curr, phone };
+              })
+            }
+            value={phone}
+            label="Your Phone"
+            isError={isError && !validate("phone", phone)}
+          />
+        )}
+        {isLoggedIn && (
+          <button onClick={handleAddExchange}>Add Exchange</button>
+        )}
+        {isLoggedIn && (
+          <button
+            onClick={() =>
+              handleDeleteExchange({
+                toDelete: {
+                  name,
+                  phone,
+                  currentCourse,
+                  desiredCourse,
+                },
+              })
+            }
+          >
+            Delete Exchange
+          </button>
+        )}
       </div>
       <ExchangesList exchanges={exchanges} />
       <Cycles cycles={cycles} />
-      <footer
-      onClick={getGraph}>© 2023 Neta Kalif, Eran Shtekel, Amir Gordon, Tal Nesher</footer>
+      <footer>© 2023 Neta Kalif, Eran Shtekel, Amir Gordon, Tal Nesher</footer>
     </div>
   );
 }

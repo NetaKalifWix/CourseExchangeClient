@@ -10,7 +10,7 @@ const LoginForm = ({
   userInfo,
   setUserInfo,
 }) => {
-  const { name, password, email, phone } = userInfo;
+  const { name, password, email } = userInfo;
   const [showPassword, setShowPassword] = useState(false);
 
   const updateUserInfo = (prop) => {
@@ -25,15 +25,14 @@ const LoginForm = ({
     } else {
       return showPassword ? "login" : "send me a key";
     }
-  }
+  };
 
   const validateEmail = (email) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return emailRegex.test(email);
-  }
+  };
 
   const handleSubmit = (e) => {
-
     if (isLoggedIn) {
       setIsLoggedIn(false);
       return;
@@ -45,10 +44,6 @@ const LoginForm = ({
       getAuthKey();
       return;
     }
-
-    // todo
-    // - add validation
-    // - add debounce
 
     const toSend = {
       email: email,
@@ -70,12 +65,12 @@ const LoginForm = ({
         } else {
           alert("Wrong key");
         }
-      });
+      })
+      .catch(console.log("hi"));
   };
 
   const getAuthKey = () => {
-
-    if(!validateEmail(email)){
+    if (!validateEmail(email)) {
       alert("Please enter a valid email");
       return;
     }
@@ -93,13 +88,17 @@ const LoginForm = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("hi");
         if (data.success) {
           setShowPassword(true);
+          if (data.isAdminAns) {
+            setUserInfo({ ...userInfo, isAdmin: true });
+          }
         } else {
           alert("error sending key");
         }
       });
-  }
+  };
 
   return (
     <form className="loginForm">
