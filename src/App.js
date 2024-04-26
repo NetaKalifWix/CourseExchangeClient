@@ -86,7 +86,6 @@ function App() {
         const response = await fetch(`${url}`);
         const data = await response.json();
         setExchanges(data.exchanges);
-        // setCourseList(["hi", "bi"]);
         setCourseList(data.courses);
         updateCycle(); // Assuming updateCycle is defined elsewhere
       } catch (error) {
@@ -135,7 +134,7 @@ function App() {
       .catch((error) => console.log(error));
   };
 
-  const handleDeleteExchange = (toSend, filteredExchanges) => {
+  const handleDeleteExchange = (toSend, shouldShowAlert, filteredExchanges) => {
     const deleteItem = exchanges.find(
       (person) =>
         person.name === toSend.toDelete.name &&
@@ -158,16 +157,19 @@ function App() {
           updateCycle();
         })
         .catch((error) => console.log(error));
+      if (shouldShowAlert) {
+        let exchangeList = "";
+        for (const exchange of filteredExchanges) {
+          exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
+        }
+        if (exchangeList !== "") {
+          const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
+          alert(message);
+        }
+      }
     } else {
       alert("No data matching the deletion request was found");
     }
-
-    let exchangeList = "";
-    for (const exchange of filteredExchanges) {
-      exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
-    }
-    const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
-    alert(message);
   };
 
   return (
@@ -261,7 +263,11 @@ function App() {
           </button>
         )}
       </div>
-      <ExchangesList exchanges={exchanges} />
+      <ExchangesList
+        exchanges={exchanges}
+        isAdmin={userInfo.isAdmin}
+        handleDeleteExchange={handleDeleteExchange}
+      />
       <Cycles cycles={cycles} />
       <footer>© 2023 Neta Kalif, Eran Shtekel, Amir Gordon, Tal Nesher</footer>
     </div>

@@ -59,3 +59,10 @@ table td {
 .inputError {
   background-color: rgba(251, 163, 163, 0.746);
 }
+.deleteExchangeButton {
+  background-color: #f78864;
+  color: #fff;
+}
+.deleteExchangeButton:hover {
+  background-color: #f60505;
+}

@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Input from "./Input";
 import "./MyExchanges.css"; // Import the CSS file
 
 const MyExchanges = (props) => {
   const { isLoggedIn, userInfo } = props;
-  const { name, phone } = userInfo;
-  const [showExchanges, setShowExchanges] = useState(false);
-  const [showForm, setShowForm] = useState(true);
+  const { phone } = userInfo;
   const [myExchanges, setMyExchanges] = useState([]);
 
   const filterdExchanges = props.exchanges.filter(
     (exchange) => exchange.phone === phone
   );
-  console.log(filterdExchanges);
-  console.log(props.exchanges);
 
   useEffect(() => {
     if (isLoggedIn) {
-      setShowForm(true);
       setMyExchanges(filterdExchanges);
-      setShowExchanges(true);
-      setShowForm(false);
     }
   }, [isLoggedIn]);
 
@@ -57,6 +49,7 @@ const MyExchanges = (props) => {
                       <td>{exchange.desiredCourse}</td>
                       <td>
                         <button
+                          className="deleteExchangeButton"
                           onClick={() => {
                             props.handleDeleteExchange(
                               {
@@ -67,12 +60,14 @@ const MyExchanges = (props) => {
                                   desiredCourse: exchange.desiredCourse,
                                 },
                               },
+                              true,
                               myExchanges.filter(
                                 (exchange1) =>
-                                  exchange1.desiredCourse ===
+                                  (exchange1.desiredCourse ===
                                     exchange.desiredCourse ||
-                                  exchange1.currentCourse ===
-                                    exchange.currentCourse
+                                    exchange1.currentCourse ===
+                                      exchange.currentCourse) &&
+                                  exchange1 !== exchange
                               )
                             );
                             handleCloseModal();

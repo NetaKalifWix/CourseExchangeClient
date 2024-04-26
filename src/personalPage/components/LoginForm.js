@@ -69,7 +69,7 @@ const LoginForm = ({
           alert("Wrong key");
         }
       })
-      .catch(console.log("hi"));
+      .catch((err) => console.log(err));
   };
 
   const getAuthKey = () => {
@@ -91,7 +91,6 @@ const LoginForm = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("hi");
         if (data.success) {
           setShowPassword(true);
         } else {

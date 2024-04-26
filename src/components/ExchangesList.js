@@ -8,6 +8,7 @@ const ExchangesList = (props) => {
             <th>Name</th>
             <th>What I Have</th>
             <th>What I Want</th>
+            {props.isAdmin && <th> Delete exchange</th>}
           </tr>
         </thead>
         <tbody>
@@ -16,6 +17,28 @@ const ExchangesList = (props) => {
               <td>{exchange.name}</td>
               <td>{exchange.currentCourse}</td>
               <td>{exchange.desiredCourse}</td>
+              {props.isAdmin && (
+                <td>
+                  <button
+                    className="deleteExchangeButton"
+                    onClick={() => {
+                      props.handleDeleteExchange(
+                        {
+                          toDelete: {
+                            name: exchange.name,
+                            phone: exchange.phone,
+                            currentCourse: exchange.currentCourse,
+                            desiredCourse: exchange.desiredCourse,
+                          },
+                        },
+                        false
+                      );
+                    }}
+                  >
+                    Delete Exchange
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
