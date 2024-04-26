@@ -86,6 +86,7 @@ function App() {
         const response = await fetch(`${url}`);
         const data = await response.json();
         setExchanges(data.exchanges);
+        // setCourseList(["hi", "bi"]);
         setCourseList(data.courses);
         updateCycle(); // Assuming updateCycle is defined elsewhere
       } catch (error) {

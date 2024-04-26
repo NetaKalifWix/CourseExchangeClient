@@ -1,0 +1,78 @@
+.EditCoursesModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.EditCourseContent {
+  margin: 16px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-width: 600px;
+  width: 50%;
+}
+
+.EditCourseLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.EditCourseLine h6 {
+  margin-right: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+input {
+  margin-top: 8px;
+  /* display: block; */
+  width: 40%;
+}
+
+.addCourseForm {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.editButtonsContainer {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
+}
+
+.editButtonDelete {
+  background-color: #f78864;
+  color: #fff;
+}
+.editButtonDelete:hover {
+  background-color: #f60505;
+}
+
+.addCourseButton {
+  background-color: #9df07f;
+  color: #000000;
+}
+.addCourseButton:hover {
+  background-color: #069101;
+  color: white;
+}
