@@ -76,3 +76,7 @@ input {
   background-color: #069101;
   color: white;
 }
+
+.TermsOfUseModal {
+  width: 300px;
+}

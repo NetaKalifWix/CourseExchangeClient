@@ -18,7 +18,7 @@ const TermsOfUseModal = ({
 
   return (
     <div className="EditCoursesModal">
-      <div className="EditCourseContent">
+      <div className="EditCourseContent TermsOfUseModal">
         <div className="box">
           <h2>Terms of Use</h2>
           <p>

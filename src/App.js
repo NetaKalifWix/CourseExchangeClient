@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import DDCourseList from "./components/DDCourseList";
-
 import Cycles from "./components/Cycles";
 import Input from "./components/Input";
 import MyExchanges from "./components/MyExchanges";
 import ExchangesList from "./components/ExchangesList";
 import TopBar from "./components/TopBar";
-import LoginForm from "./personalPage/components/LoginForm";
+import LoginForm from "./components/LoginForm";
 import EditCourses from "./components/EditCourses";
 import TermsOfUseModal from "./components/TermsOfUseModal";
 

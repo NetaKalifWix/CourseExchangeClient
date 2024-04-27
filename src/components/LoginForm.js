@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../../components/Input";
+import Input from "./Input";
 import "./LoginForm.css";
 
 const LoginForm = ({
@@ -28,8 +28,12 @@ const LoginForm = ({
     }
   };
 
+  // const validateEmail = (email) => {
+  //   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  //   return emailRegex.test(email);
+  // };
   const validateEmail = (email) => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@post\.bgu\.ac\.il$/;
     return emailRegex.test(email);
   };
 
@@ -77,7 +81,7 @@ const LoginForm = ({
 
   const getAuthKey = () => {
     if (!validateEmail(email)) {
-      alert("Please enter a valid email");
+      alert("Please enter a valid BGU email");
       return;
     }
 

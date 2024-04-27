@@ -52,7 +52,7 @@ const TopBar = ({
     );
   };
   return (
-    <header className="topbar">
+    <header className={`topbar ${isLoggegIn ? "loggedIn" : ""}`}>
       <button
         className="login_button"
         onClick={() => setShowLoginFrom((curr) => !curr)}
