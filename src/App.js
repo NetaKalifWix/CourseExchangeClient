@@ -9,6 +9,7 @@ import ExchangesList from "./components/ExchangesList";
 import TopBar from "./components/TopBar";
 import LoginForm from "./personalPage/components/LoginForm";
 import EditCourses from "./components/EditCourses";
+import TermsOfUseModal from "./components/TermsOfUseModal";
 
 // const url = process.env.REACT_APP_STATUS === "prod"
 //   ? process.env.REACT_APP_SERVER_URL
@@ -33,6 +34,7 @@ function App() {
   const [showMyExchanges, setShowMyExchanges] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isEditCoursesModalOpen, setIsEditCoursesModalOpen] = useState(false);
+  const [isTermsOfUseModalOpen, setIsTermsOfUseModalOpen] = useState(false);
 
   const { name, phone, email } = userInfo;
 
@@ -158,11 +160,11 @@ function App() {
         })
         .catch((error) => console.log(error));
       if (shouldShowAlert) {
-        let exchangeList = "";
-        for (const exchange of filteredExchanges) {
-          exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
-        }
-        if (exchangeList !== "") {
+        if (filteredExchanges.length !== 0) {
+          let exchangeList = "";
+          for (const exchange of filteredExchanges) {
+            exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
+          }
           const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
           alert(message);
         }
@@ -191,6 +193,7 @@ function App() {
           setShowLoginFrom={setShowLoginFrom}
           userInfo={userInfo}
           setUserInfo={setUserInfo}
+          setIsTermsOfUseModalOpen={setIsTermsOfUseModalOpen}
         />
       )}
       {isEditCoursesModalOpen && (
@@ -200,6 +203,9 @@ function App() {
           url={url}
           setIsEditCoursesModalOpen={setIsEditCoursesModalOpen}
         />
+      )}
+      {isTermsOfUseModalOpen && (
+        <TermsOfUseModal setIsTermsOfUseModalOpen={setIsTermsOfUseModalOpen} />
       )}
       {showMyExchanges && (
         <MyExchanges

@@ -9,6 +9,7 @@ const LoginForm = ({
   setShowLoginFrom,
   userInfo,
   setUserInfo,
+  setIsTermsOfUseModalOpen,
 }) => {
   const { name, password, email } = userInfo;
   const [showPassword, setShowPassword] = useState(false);
@@ -64,6 +65,8 @@ const LoginForm = ({
           setShowLoginFrom(false);
           if (data.isAdmin) {
             setUserInfo({ ...userInfo, isAdmin: true });
+          } else {
+            setIsTermsOfUseModalOpen(true);
           }
         } else {
           alert("Wrong key");
