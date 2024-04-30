@@ -155,19 +155,20 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
           setExchanges(data);
+          setShowMyExchanges(true);
           updateCycle();
+          if (shouldShowAlert) {
+            if (filteredExchanges.length !== 0) {
+              let exchangeList = "";
+              for (const exchange of filteredExchanges) {
+                exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
+              }
+              const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
+              alert(message);
+            }
+          }
         })
         .catch((error) => console.log(error));
-      if (shouldShowAlert) {
-        if (filteredExchanges.length !== 0) {
-          let exchangeList = "";
-          for (const exchange of filteredExchanges) {
-            exchangeList += `What I have: ${exchange.currentCourse}, What I want: ${exchange.desiredCourse}\n`;
-          }
-          const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
-          alert(message);
-        }
-      }
     } else {
       alert("No data matching the deletion request was found");
     }
