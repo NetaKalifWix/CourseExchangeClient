@@ -42,5 +42,8 @@
   position: relative;
 }
 .topbar h1 {
+  padding-left: 3%;
+}
+.topbar.admin.loggedIn h1 {
   padding-left: 7%;
 }
