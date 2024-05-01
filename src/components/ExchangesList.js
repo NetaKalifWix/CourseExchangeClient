@@ -1,3 +1,4 @@
+import "./ExchangesListAndCycles.css";
 const ExchangesList = (props) => {
   return (
     <div className="exchanges">

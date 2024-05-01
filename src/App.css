@@ -1,8 +1,9 @@
 /* App.css */
-
-/* Global styles */
+* {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f0f0f0; /* Add a background color to the entire page */
@@ -10,7 +11,6 @@ body {
 
 .App {
   text-align: center;
-  /* margin: 20px; */
 }
 
 h1 {
@@ -65,7 +65,7 @@ button:hover {
 /* Exchanges styles */
 .exchanges {
   margin-top: 20px;
-  background-color: #fff; /* Set a white background for exchanges */
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -94,7 +94,7 @@ ul li {
 
   width: 75%;
   margin: 24px auto;
-  background-color: #fff; /* Set a white background for exchanges */
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -108,20 +108,4 @@ ul li {
   border-radius: 3px;
   width: 100%;
   max-width: 300px;
-}
-.label-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 10px 0;
-  font-weight: bold;
-}
-
-/* Adjust the dropdown style to remove the width constraint */
-.select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  max-width: 300px;
-  width: 100%; /* Allow the dropdown to expand to its container's width */
 }

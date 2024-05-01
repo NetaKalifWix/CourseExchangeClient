@@ -1,3 +1,4 @@
+import "./ExchangesListAndCycles.css";
 const Cycles = (props) => {
   let cycles = props.cycles;
   cycles = cycles.map((cycle) =>
