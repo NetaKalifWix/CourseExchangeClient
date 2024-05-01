@@ -14,8 +14,8 @@ import TermsOfUseModal from "./components/TermsOfUseModal";
 //   ? process.env.REACT_APP_SERVER_URL
 //   : process.env.REACT_APP_LOCAL_SERVER_URL;
 
-// const url = "https://course-exchange-server.onrender.com";
-const url = "http://localhost:3002";
+const url = "https://course-exchange-server.onrender.com";
+// const url = "http://localhost:3002";
 
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
