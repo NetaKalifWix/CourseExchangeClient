@@ -135,7 +135,7 @@ function App() {
       .catch((error) => console.log(error));
   };
 
-  const handleDeleteExchange = (toSend, shouldShowAlert, filteredExchanges) => {
+  const handleDeleteExchange = (toSend, fromMyExchanges, filteredExchanges) => {
     const deleteItem = exchanges.find(
       (person) =>
         person.name === toSend.toDelete.name &&
@@ -155,9 +155,8 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
           setExchanges(data);
-          setShowMyExchanges(true);
           updateCycle();
-          if (shouldShowAlert) {
+          if (fromMyExchanges) {
             if (filteredExchanges.length !== 0) {
               let exchangeList = "";
               for (const exchange of filteredExchanges) {
@@ -166,6 +165,7 @@ function App() {
               const message = `You also have the following exchanges that might be irrelevant:\n${exchangeList}\nPlease consider deleting them as well.`;
               alert(message);
             }
+            setShowMyExchanges(true);
           }
         })
         .catch((error) => console.log(error));
