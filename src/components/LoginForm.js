@@ -34,7 +34,9 @@ const LoginForm = ({
   // };
   const validateEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@bgu\.ac\.il$/;
-    return emailRegex.test(email);
+    const emailRegexPost = /^[a-zA-Z0-9._%+-]+@post.bgu\.ac\.il$/;
+
+    return emailRegex.test(email) || emailRegexPost.test(email);
   };
 
   const handleSubmit = (e) => {
