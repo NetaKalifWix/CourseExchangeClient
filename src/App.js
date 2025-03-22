@@ -10,12 +10,7 @@ import LoginForm from "./components/LoginForm";
 import EditCourses from "./components/EditCourses";
 import TermsOfUseModal from "./components/TermsOfUseModal";
 
-// const url = process.env.REACT_APP_STATUS === "prod"
-//   ? process.env.REACT_APP_SERVER_URL
-//   : process.env.REACT_APP_LOCAL_SERVER_URL;
-
-const url = "https://course-exchange-server.onrender.com";
-// const url = "http://localhost:3002";
+const url = process.env.REACT_APP_SERVER_URL;
 
 function App() {
   const [desiredCourse, setDesiredCourse] = useState("");
@@ -80,7 +75,17 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginFrom, setShowLoginFrom] = useState(false);
-
+  const updateCycle = () => {
+    fetch(`${url}/cycles`)
+      .then((response) => {
+        console.log(response.json());
+        return response.json();
+      })
+      .then((data) => {
+        setCycles(data);
+      })
+      .catch((error) => console.log(error));
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -88,24 +93,15 @@ function App() {
         const data = await response.json();
         setExchanges(data.exchanges);
         setCourseList(data.courses);
-        updateCycle(); // Assuming updateCycle is defined elsewhere
+        setCycles(data.cycles);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-    const interval = setInterval(fetchData, 2000);
+    const interval = setInterval(fetchData, 100000);
     return () => clearInterval(interval);
   }, []);
-
-  const updateCycle = () => {
-    fetch(`${url}/cycles`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCycles(data);
-      })
-      .catch((error) => console.log(error));
-  };
 
   const handleAddExchange = () => {
     if (!validateAll()) {
